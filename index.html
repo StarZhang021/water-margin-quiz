@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>水浒人物性格测评 — 测测你是梁山哪位好汉？</title>
+<meta name="description" content="基于《水浒传》一百单八将性格特质的趣味测评，24题精简版与96题完整版，匹配你最接近的梁山好汉。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+XiaoWei&display=swap');
+:root{--bg-deep:#0d0a07;--bg-primary:#1a1410;--bg-secondary:#231c14;--bg-card:#2e2419;--accent-red:#c23a2b;--accent-red-glow:rgba(194,58,43,0.4);--accent-red-soft:rgba(194,58,43,0.15);--accent-gold:#d4a84b;--accent-gold-dim:rgba(212,168,75,0.25);--accent-jade:#5a8a6e;--accent-jade-dim:rgba(90,138,110,0.2);--text-primary:#e8dcc8;--text-secondary:#a89880;--text-muted:#6b5d4f;--border-subtle:rgba(168,152,128,0.1);--font-brush:"Ma Shan Zheng","ZCOOL XiaoWei",cursive;--font-serif:"Noto Serif SC","Source Han Serif SC","STSong","SimSun",serif;--font-sans:"Noto Sans SC","Source Han Sans SC","PingFang SC","Microsoft YaHei",sans-serif;--ease-out:cubic-bezier(0.25,0.46,0.45,0.94);--ease-bounce:cubic-bezier(0.34,1.56,0.64,1)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{font-size:16px;scroll-behavior:smooth}body{font-family:var(--font-sans);background:var(--bg-deep);color:var(--text-primary);min-height:100vh;overflow-x:hidden;line-height:1.7;-webkit-font-smoothing:antialiased}
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0.04;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#app{position:relative;z-index:2;min-height:100vh}
+.page{display:none;min-height:100vh;padding:2rem 1.5rem;animation:fadeSlideIn 0.6s var(--ease-out) both}.page.active{display:flex;flex-direction:column;align-items:center}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.welcome{justify-content:center;text-align:center;max-width:680px;margin:0 auto}
+.welcome-ornament{font-size:3rem;margin-bottom:1rem;opacity:0;animation:floatIn 1s 0.2s var(--ease-bounce) both}
+@keyframes floatIn{from{opacity:0;transform:scale(0.5) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.welcome-title{font-family:var(--font-brush);font-size:clamp(2.5rem,8vw,4.5rem);background:linear-gradient(135deg,var(--text-primary),var(--accent-gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:0.08em;line-height:1.3;margin-bottom:0.5rem;opacity:0;animation:fadeSlideIn 0.8s 0.4s var(--ease-out) both}
+.welcome-sub{font-family:var(--font-serif);font-size:clamp(1rem,3vw,1.3rem);color:var(--accent-gold);letter-spacing:0.15em;margin-bottom:2rem;opacity:0;animation:fadeSlideIn 0.8s 0.6s var(--ease-out) both}
+.welcome-desc{font-size:0.95rem;color:var(--text-secondary);max-width:480px;margin:0 auto 2.5rem;line-height:1.9;opacity:0;animation:fadeSlideIn 0.8s 0.8s var(--ease-out) both}
+.version-selector{display:flex;gap:1rem;justify-content:center;margin-bottom:2rem;flex-wrap:wrap;opacity:0;animation:fadeSlideIn 0.8s 1s var(--ease-out) both}
+.version-card{background:var(--bg-card);border:2px solid var(--border-subtle);border-radius:16px;padding:1.5rem 2rem;cursor:pointer;transition:all 0.3s var(--ease-out);width:200px;text-align:center;position:relative;overflow:hidden;user-select:none}
+.version-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent-red-soft),transparent);opacity:0;transition:opacity 0.3s}
+.version-card:hover{border-color:var(--accent-red);transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,0.3)}.version-card:hover::before{opacity:1}
+.version-card.selected{border-color:var(--accent-red);box-shadow:0 0 20px var(--accent-red-glow)}.version-card.selected::before{opacity:1}
+.version-icon{font-size:2rem;margin-bottom:0.5rem;position:relative;z-index:1}
+.version-name{font-family:var(--font-serif);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.3rem;position:relative;z-index:1}
+.version-info{font-size:0.8rem;color:var(--text-secondary);position:relative;z-index:1}
+.version-badge{position:absolute;top:8px;right:8px;background:var(--accent-red);color:white;font-size:0.65rem;padding:2px 8px;border-radius:10px;font-weight:700}
+.btn-start{font-family:var(--font-serif);font-size:1.2rem;font-weight:700;color:var(--text-primary);background:linear-gradient(135deg,var(--accent-red),#a02820);border:none;padding:1rem 3rem;border-radius:12px;cursor:pointer;letter-spacing:0.15em;transition:all 0.3s var(--ease-out);position:relative;overflow:hidden;opacity:0;animation:fadeSlideIn 0.8s 1.2s var(--ease-out) both}
+.btn-start:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 25px var(--accent-red-glow)}
+.btn-start:disabled{opacity:0.4;cursor:not-allowed}
+.welcome-footer{margin-top:2rem;font-size:0.8rem;color:var(--text-muted);opacity:0;animation:fadeSlideIn 0.8s 1.4s var(--ease-out) both}
+.quiz{max-width:700px;width:100%;margin:0 auto;padding-top:1rem}
+.progress-bar{margin-bottom:2rem}
+.progress-track{width:100%;height:12px;background:var(--bg-card);border-radius:6px;overflow:hidden;border:1px solid var(--border-subtle)}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent-red),var(--accent-gold));border-radius:6px;transition:width 0.5s var(--ease-out)}
+.progress-info{display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem}
+.progress-text{font-family:var(--font-serif);font-size:0.85rem;color:var(--text-secondary)}
+.progress-dim{font-size:0.8rem;color:var(--accent-jade);font-weight:500}
+.question-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;padding:2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;animation:cardRise 0.4s var(--ease-bounce) both}
+@keyframes cardRise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.question-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent-red),var(--accent-gold),var(--accent-jade))}
+.q-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem}
+.q-number{font-family:var(--font-serif);font-size:0.8rem;font-weight:700;color:var(--accent-red);border:2px solid var(--accent-red);width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:8px;transform:rotate(-3deg);flex-shrink:0}
+.q-dim-tag{font-size:0.75rem;color:var(--accent-jade);background:var(--accent-jade-dim);padding:3px 10px;border-radius:12px;font-weight:500}
+.q-text{font-family:var(--font-serif);font-size:clamp(1rem,3vw,1.2rem);line-height:1.8;color:var(--text-primary)}
+.options{display:flex;flex-direction:column;gap:0.6rem}
+.option-btn{display:flex;align-items:center;gap:1rem;background:var(--bg-secondary);border:1.5px solid var(--border-subtle);border-radius:12px;padding:1rem 1.2rem;cursor:pointer;transition:all 0.25s var(--ease-out);text-align:left;width:100%;font-family:var(--font-sans);font-size:0.95rem;color:var(--text-primary)}
+.option-btn:hover{border-color:var(--accent-gold);background:var(--bg-card);transform:translateX(4px)}
+.option-btn.selected{border-color:var(--accent-red);background:var(--accent-red-soft);box-shadow:0 0 15px var(--accent-red-glow)}
+.opt-score{font-family:var(--font-serif);font-weight:700;color:var(--accent-gold);width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--accent-gold-dim);border-radius:8px;flex-shrink:0;font-size:0.85rem}
+.option-btn.selected .opt-score{background:var(--accent-red);color:white}
+.opt-label{flex:1}.opt-emoji{font-size:1.1rem;margin-left:auto;opacity:0.6;transition:opacity 0.2s}.option-btn:hover .opt-emoji,.option-btn.selected .opt-emoji{opacity:1}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;gap:1rem}
+.btn-nav{font-family:var(--font-serif);font-size:0.95rem;padding:0.8rem 1.8rem;border-radius:10px;cursor:pointer;transition:all 0.3s var(--ease-out);font-weight:600}
+.btn-prev{background:var(--bg-card);border:1.5px solid var(--border-subtle);color:var(--text-secondary)}.btn-prev:hover{border-color:var(--text-secondary);color:var(--text-primary)}
+.btn-next{background:linear-gradient(135deg,var(--accent-red),#a02820);border:none;color:white}.btn-next:hover{transform:translateY(-2px);box-shadow:0 4px 15px var(--accent-red-glow)}
+.result{max-width:800px;width:100%;margin:0 auto;padding-top:1rem}
+.reveal-container{text-align:center;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:2rem}
+.reveal-star,.reveal-nickname,.reveal-name{font-family:var(--font-brush);opacity:0;transform:scale(0.6);transition:all 0.8s var(--ease-bounce)}
+.reveal-star.visible,.reveal-nickname.visible,.reveal-name.visible{opacity:1;transform:scale(1)}
+.reveal-star{font-size:clamp(0.9rem,2.5vw,1.1rem);color:var(--accent-gold);letter-spacing:0.3em;margin-bottom:0.8rem}
+.reveal-nickname{font-size:clamp(1.5rem,4vw,2.2rem);color:var(--accent-red);font-weight:700;letter-spacing:0.2em;margin-bottom:0.5rem}
+.reveal-name{font-size:clamp(2.5rem,7vw,4.5rem);font-weight:900;background:linear-gradient(135deg,var(--text-primary),var(--accent-gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:0.15em;margin-bottom:1rem}
+.stamp-container{position:relative;display:inline-block;margin-bottom:1.5rem}
+.stamp{font-family:var(--font-serif);font-size:1.5rem;font-weight:900;color:var(--accent-red);border:3px solid var(--accent-red);padding:0.5rem 1.2rem;transform:rotate(-8deg);opacity:0;transition:opacity 0.4s,transform 0.4s var(--ease-bounce);letter-spacing:0.2em}
+.stamp.visible{opacity:0.85;transform:rotate(-8deg) scale(1)}
+.stamp::before{content:'';position:absolute;inset:-2px;border:1px solid var(--accent-red);opacity:0.3}
+.reveal-sketch{max-width:560px;font-size:0.9rem;color:var(--text-secondary);line-height:1.9;opacity:0;transition:opacity 1s ease;text-align:left;margin:0 auto;padding:0 1rem}.reveal-sketch.visible{opacity:1}
+.section-title{font-family:var(--font-serif);font-size:1.15rem;font-weight:700;color:var(--accent-gold);letter-spacing:0.1em;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem}.section-title::before{content:'◆';font-size:0.6rem;color:var(--accent-red)}
+.ink-divider{height:1px;background:linear-gradient(90deg,transparent,var(--accent-gold-dim),var(--accent-red-soft),var(--accent-gold-dim),transparent);margin:2rem 0;position:relative}.ink-divider::after{content:'※';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--bg-deep);padding:0 1rem;color:var(--accent-gold);font-size:0.8rem}
+.radar-section{margin:2rem 0;text-align:center}#radar-canvas{max-width:420px;max-height:420px;width:100%;aspect-ratio:1}
+.dimension-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin:1.5rem 0}
+.dim-card{background:var(--bg-card);border-radius:12px;padding:1.2rem;border:1px solid var(--border-subtle);transition:transform 0.2s}.dim-card:hover{transform:translateY(-2px)}
+.dim-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem}
+.dim-name{font-family:var(--font-serif);font-size:1rem;font-weight:600;display:flex;align-items:center;gap:0.4rem}
+.dim-scores{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem}
+.dim-score-item{display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:var(--text-secondary)}
+.dot{width:8px;height:8px;border-radius:50%}.dot-user{background:var(--accent-red)}.dot-char{background:var(--accent-gold)}
+.dim-bar-track{width:100%;height:6px;background:rgba(107,93,79,0.2);border-radius:3px;margin-bottom:0.8rem;position:relative;overflow:hidden}
+.dim-bar-user,.dim-bar-char{position:absolute;top:0;left:0;height:100%;border-radius:3px;transition:width 0.8s var(--ease-out)}
+.dim-bar-user{background:linear-gradient(90deg,var(--accent-red),#e05545);z-index:2}
+.dim-bar-char{background:linear-gradient(90deg,var(--accent-gold),#e8c060);z-index:1;opacity:0.5}
+.dim-interpretation{font-size:0.82rem;color:var(--text-secondary);line-height:1.7}
+.report-section{background:var(--bg-card);border-radius:12px;padding:1.5rem;margin-bottom:1rem;border:1px solid var(--border-subtle)}
+.report-text{font-size:0.9rem;color:var(--text-secondary);line-height:1.9}
+.sub-matches{display:flex;flex-direction:column;gap:0.8rem}
+.sub-match-item{display:flex;align-items:center;gap:1rem;background:var(--bg-card);border-radius:12px;padding:1rem 1.2rem;border:1px solid var(--border-subtle)}
+.sub-match-rank{font-family:var(--font-serif);font-size:0.75rem;color:var(--accent-gold);background:var(--accent-gold-dim);padding:4px 10px;border-radius:8px;white-space:nowrap;font-weight:600}
+.sub-match-info{flex:1}.sub-match-name{font-family:var(--font-serif);font-weight:700;font-size:1rem}.sub-match-detail{font-size:0.8rem;color:var(--text-secondary)}.sub-match-dist{font-size:0.8rem;color:var(--text-muted);font-family:var(--font-serif)}
+.result-actions{display:flex;gap:1rem;justify-content:center;margin-top:2rem;flex-wrap:wrap}
+.btn-primary{font-family:var(--font-serif);font-size:1rem;font-weight:700;color:white;background:linear-gradient(135deg,var(--accent-red),#a02820);border:none;padding:0.9rem 2.2rem;border-radius:12px;cursor:pointer;transition:all 0.3s}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--accent-red-glow)}
+.btn-secondary{font-family:var(--font-serif);font-size:1rem;font-weight:600;color:var(--text-secondary);background:var(--bg-card);border:1.5px solid var(--border-subtle);padding:0.9rem 2.2rem;border-radius:12px;cursor:pointer;transition:all 0.3s}.btn-secondary:hover{border-color:var(--accent-gold);color:var(--accent-gold)}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg-card);color:var(--text-primary);padding:0.8rem 1.5rem;border-radius:12px;border:1px solid var(--accent-gold);font-size:0.9rem;z-index:100;transition:transform 0.4s var(--ease-bounce);pointer-events:none}.toast.show{transform:translateX(-50%) translateY(0)}
+@media(max-width:640px){.page{padding:1.5rem 1rem}.version-selector{flex-direction:column;align-items:center}.version-card{width:100%;max-width:260px}.dimension-grid{grid-template-columns:1fr}.quiz-nav{flex-direction:column}.btn-nav{width:100%;text-align:center}.result-actions{flex-direction:column;align-items:center}.btn-primary,.btn-secondary{width:100%;max-width:280px;text-align:center}}
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div id="app">
+<section class="page welcome active" id="page-welcome">
+  <div class="welcome-ornament">⚔️</div>
+  <h1 class="welcome-title">水浒人物性格测评</h1>
+  <p class="welcome-sub">测测你是梁山哪位好汉？</p>
+  <p class="welcome-desc">从侠义心肠到乐观洒脱，八个维度描绘你的江湖人格。<br>完成测评，匹配与你性格最接近的梁山好汉。</p>
+  <div class="version-selector">
+    <div class="version-card" data-version="24" onclick="selectVersion(24)"><span class="version-badge">快速</span><div class="version-icon">📜</div><div class="version-name">精简版</div><div class="version-info">24 道题 · 约 3 分钟</div></div>
+    <div class="version-card" data-version="96" onclick="selectVersion(96)"><span class="version-badge">全面</span><div class="version-icon">📖</div><div class="version-name">完整版</div><div class="version-info">96 道题 · 约 10 分钟</div></div>
+  </div>
+  <button class="btn-start" id="btn-start" disabled onclick="startQuiz()">开始测评</button>
+  <p class="welcome-footer">基于《水浒传》一百单八将性格特质设计 · 八维度测评体系</p>
+</section>
+<section class="page quiz" id="page-quiz">
+  <div class="progress-bar"><div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div class="progress-info"><span class="progress-text" id="progress-text">第 1 题</span><span class="progress-dim" id="progress-dim"></span></div></div>
+  <div id="question-area"></div>
+  <div class="quiz-nav"><button class="btn-nav btn-prev" id="btn-prev" onclick="prevQuestion()">上一题</button><button class="btn-nav btn-next" id="btn-next" onclick="nextQuestion()">下一题</button></div>
+</section>
+<section class="page result" id="page-result">
+  <div class="reveal-container"><div class="reveal-star" id="reveal-star"></div><div class="reveal-nickname" id="reveal-nickname"></div><div class="reveal-name" id="reveal-name"></div><div class="stamp-container"><div class="stamp" id="reveal-stamp"></div></div><p class="reveal-sketch" id="reveal-sketch"></p></div>
+  <div class="ink-divider"></div>
+  <div class="radar-section"><h2 class="section-title">八维性格雷达图</h2><canvas id="radar-canvas" width="800" height="800"></canvas></div>
+  <div class="ink-divider"></div>
+  <h2 class="section-title">八维性格光谱详解</h2><div class="dimension-grid" id="dimension-grid"></div>
+  <div class="ink-divider"></div>
+  <div id="report-sections"></div>
+  <div class="ink-divider"></div>
+  <h2 class="section-title">次匹配人物</h2><div class="sub-matches" id="sub-matches"></div>
+  <div class="result-actions"><button class="btn-primary" onclick="restartQuiz()">重新测评</button><button class="btn-secondary" onclick="shareResult()">分享结果</button></div>
+</section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ====== DATA: 96 Questions ====== */
+var ALL_Q=[
+{id:1,text:"看到弱者受欺负，我很难袖手旁观。",d:"侠义",r:0},
+{id:2,text:"路见不平，即使可能有危险，我也会挺身而出。",d:"侠义",r:0},
+{id:3,text:"别人的麻烦与我无关，我通常不会主动过问。",d:"侠义",r:1},
+{id:4,text:"朋友遇到困难，我会想尽办法帮忙。",d:"侠义",r:0},
+{id:5,text:"我乐意为人打抱不平，哪怕对方是陌生人。",d:"侠义",r:0},
+{id:6,text:"我愿意牺牲个人利益去帮助真正需要的人。",d:"侠义",r:0},
+{id:7,text:"我对不公正的事情特别敏感。",d:"侠义",r:0},
+{id:8,text:"看到有人被冤枉，我会感到愤怒。",d:"侠义",r:0},
+{id:9,text:"我经常主动帮助陌生人指路或解决问题。",d:"侠义",r:0},
+{id:10,text:"如果朋友被欺负，我会毫不犹豫替他出头。",d:"侠义",r:0},
+{id:11,text:"帮助他人之前，我会先权衡自己的得失。",d:"侠义",r:1},
+{id:12,text:"社会上的不公平现象太多，我早已麻木。",d:"侠义",r:1},
+{id:13,text:"做决定前，我会反复思考可能的后果。",d:"沉稳",r:0},
+{id:14,text:"即使面对挑衅，我也能保持冷静克制。",d:"沉稳",r:0},
+{id:15,text:"我常常想到什么就做什么，不计后果。",d:"沉稳",r:1},
+{id:16,text:"我很少在愤怒时说出让自己后悔的话。",d:"沉稳",r:0},
+{id:17,text:"我倾向于三思而后行。",d:"沉稳",r:0},
+{id:18,text:"我喜欢有条理、有计划的生活。",d:"沉稳",r:0},
+{id:19,text:"耐心等待对我来说不是问题。",d:"沉稳",r:0},
+{id:20,text:"我能很好地控制自己的脾气。",d:"沉稳",r:0},
+{id:21,text:"我在紧张时仍能保持清晰的思考。",d:"沉稳",r:0},
+{id:22,text:"别人一激，我就容易冲动。",d:"沉稳",r:1},
+{id:23,text:"等待让我感到焦躁不安。",d:"沉稳",r:1},
+{id:24,text:"我的情绪容易大起大落。",d:"沉稳",r:1},
+{id:25,text:"我喜欢大口喝酒、大块吃肉的痛快感觉。",d:"豪放",r:0},
+{id:26,text:"高兴时我会大声笑，难过时我会直接表现出来。",d:"豪放",r:0},
+{id:27,text:"我更喜欢安静、文雅的活动。",d:"豪放",r:1},
+{id:28,text:"我在朋友面前总是很放得开，无拘无束。",d:"豪放",r:0},
+{id:29,text:"我不喜欢繁文缛节，觉得做人要直来直去。",d:"豪放",r:0},
+{id:30,text:"我觉得人活得粗糙一点才痛快。",d:"豪放",r:0},
+{id:31,text:"和豪爽的人在一起，我觉得特别舒服。",d:"豪放",r:0},
+{id:32,text:"我喜欢热闹的场合，能大声谈笑。",d:"豪放",r:0},
+{id:33,text:"说话做事我习惯拐弯抹角，给人留面子。",d:"豪放",r:1},
+{id:34,text:"在社交场合，我总是很注意自己的形象和礼节。",d:"豪放",r:1},
+{id:35,text:"我不太能接受过于粗犷豪迈的行为。",d:"豪放",r:1},
+{id:36,text:"我更喜欢含蓄内敛的表达方式。",d:"豪放",r:1},
+{id:37,text:"我反感那些仗势欺人的权威。",d:"叛逆",r:0},
+{id:38,text:"对于不合理的规则，我有挑战的冲动。",d:"叛逆",r:0},
+{id:39,text:"即使对方地位很高，如果错了我也敢当面指出。",d:"叛逆",r:0},
+{id:40,text:"我不愿意盲目服从大多数人的意见。",d:"叛逆",r:0},
+{id:41,text:"被压迫时，我一定会奋起反抗。",d:"叛逆",r:0},
+{id:42,text:"我认为很多传统规矩已经不合时宜，应当打破。",d:"叛逆",r:0},
+{id:43,text:"我佩服那些敢第一个站出来唱反调的人。",d:"叛逆",r:0},
+{id:44,text:"如果领导做了错事，我会公开质疑。",d:"叛逆",r:0},
+{id:45,text:"遵守社会既有秩序比挑战它更为重要。",d:"叛逆",r:1},
+{id:46,text:"我很少质疑上级或长辈的决定。",d:"叛逆",r:1},
+{id:47,text:"即使内心不满，我也会选择忍气吞声。",d:"叛逆",r:1},
+{id:48,text:"我认同枪打出头鸟，不要轻易出头。",d:"叛逆",r:1},
+{id:49,text:"答应朋友的事，我一定会做到。",d:"忠义",r:0},
+{id:50,text:"一旦认定了追随的人或团队，我就会忠心不二。",d:"忠义",r:0},
+{id:51,text:"承诺是可以变通的，不用太较真。",d:"忠义",r:1},
+{id:52,text:"为了报答恩情，我愿意付出很多。",d:"忠义",r:0},
+{id:53,text:"我不会在别人背后说坏话，背叛朋友。",d:"忠义",r:0},
+{id:54,text:"我对朋友几乎没有秘密，赤诚相待。",d:"忠义",r:0},
+{id:55,text:"即使朋友落魄，我也会不离不弃。",d:"忠义",r:0},
+{id:56,text:"受人之托，忠人之事，这是我的原则。",d:"忠义",r:0},
+{id:57,text:"我认为做人最重要的就是信义二字。",d:"忠义",r:0},
+{id:58,text:"如果对自己更有利，我不介意更换阵营。",d:"忠义",r:1},
+{id:59,text:"我对别人的秘密很难守口如瓶。",d:"忠义",r:1},
+{id:60,text:"人与人之间本就是相互利用，谈何忠心。",d:"忠义",r:1},
+{id:61,text:"在团队中，我经常是拿主意的那个人。",d:"领导",r:0},
+{id:62,text:"我喜欢指挥别人完成任务。",d:"领导",r:0},
+{id:63,text:"我对带领大家达成目标充满信心。",d:"领导",r:0},
+{id:64,text:"人们经常来征求我的意见。",d:"领导",r:0},
+{id:65,text:"在集体活动中，我习惯于扮演组织者的角色。",d:"领导",r:0},
+{id:66,text:"我能很好地协调不同人之间的关系。",d:"领导",r:0},
+{id:67,text:"我喜欢站在众人面前发表主张。",d:"领导",r:0},
+{id:68,text:"大家都觉得我有领导才能。",d:"领导",r:0},
+{id:69,text:"我更愿意跟随他人，而不是充当领袖。",d:"领导",r:1},
+{id:70,text:"我不喜欢管别人的闲事。",d:"领导",r:1},
+{id:71,text:"做决策时我总是犹豫不决，希望有人替我决定。",d:"领导",r:1},
+{id:72,text:"在集体中，我习惯默默无闻。",d:"领导",r:1},
+{id:73,text:"我享受独处，一个人做事效率更高。",d:"孤傲",r:0},
+{id:74,text:"我觉得自己很难真正融入人群。",d:"孤傲",r:0},
+{id:75,text:"我特别喜欢和一群人在一起说说笑笑。",d:"孤傲",r:1},
+{id:76,text:"大多数人都达不到我的标准，我有些看不惯。",d:"孤傲",r:0},
+{id:77,text:"我不喜欢热闹的聚会，宁愿自己待着。",d:"孤傲",r:0},
+{id:78,text:"我很少向别人倾诉心事。",d:"孤傲",r:0},
+{id:79,text:"我对朋友的质量要求很高，宁缺毋滥。",d:"孤傲",r:0},
+{id:80,text:"我喜欢独自旅行或工作。",d:"孤傲",r:0},
+{id:81,text:"我认为自己比周围大多数人更优秀。",d:"孤傲",r:0},
+{id:82,text:"我总是很依赖朋友，害怕孤单。",d:"孤傲",r:1},
+{id:83,text:"我觉得人人都有可取之处，很少轻视别人。",d:"孤傲",r:1},
+{id:84,text:"我是聚会中最容易和别人打成一片的人。",d:"孤傲",r:1},
+{id:85,text:"遇到挫折，我总能很快想开。",d:"乐观",r:0},
+{id:86,text:"我喜欢随遇而安，计划赶不上变化。",d:"乐观",r:0},
+{id:87,text:"我经常为小事耿耿于怀，难以释怀。",d:"乐观",r:1},
+{id:88,text:"我相信天无绝人之路，不用太焦虑。",d:"乐观",r:0},
+{id:89,text:"功名利禄都是身外之物，自在最重要。",d:"乐观",r:0},
+{id:90,text:"即使失去重要的东西，我也能很快放下。",d:"乐观",r:0},
+{id:91,text:"我认为人生苦短，应当及时行乐。",d:"乐观",r:0},
+{id:92,text:"我不太计较个人得失，开心就好。",d:"乐观",r:0},
+{id:93,text:"面对变故，我常能一笑置之。",d:"乐观",r:0},
+{id:94,text:"我总是为未来感到担忧。",d:"乐观",r:1},
+{id:95,text:"我非常在意得失，放不下。",d:"乐观",r:1},
+{id:96,text:"我总觉得自己命途多舛，很难开心起来。",d:"乐观",r:1}
+];
+var SHORT_IDS=[1,2,3,13,14,15,25,26,27,37,38,39,49,50,51,61,62,63,73,74,75,85,86,87];
+
+/* ====== DATA: 29 Characters ====== */
+var CHARS=[
+{rk:1,star:"天魁星",nk:"及时雨",nm:"宋江",s:[3,4,2,2,5,5,3,2],sk:"天魁星，梁山泊第一把交椅，人称及时雨呼保义。面黑身矮，武艺平平，却以一颗济人之心、一套驭人之术，将一百零八颗星辰聚拢于水泊。",sp:"忠义（极高，5分）：宋江的忠义近乎信仰。<br>领导（极高，5分）：天生的组织者与精神领袖。<br>沉稳（高，4分）：喜怒不形于色。<br>侠义（中，3分）：他行侠，但非不计后果的莽夫。<br>豪放（低，2分）：表面谦和，内心拘谨。<br>叛逆（低，2分）：骨子里是体制的信徒。<br>孤傲（中，3分）：他需要人群，却在人群中永远孤独。<br>乐观（低，2分）：悲观主义者。",tr:"核心特质一：道德完美主义的囚徒。宋江毕生追求忠义双全的道德圆满，但乱世不容圆满。<br>核心特质二：高段位人际关系操盘手。他以极低的姿态获取极高的威望。",al:"宋江的人生是一部黑色幽默剧：他一生所做的一切，都是为了让兄弟们修成正果；而正果的代价，是兄弟凋零，自己饮鸩。",mo:"若生于当代，最适合担任大型组织的精神领袖或危机公关专家。"},
+{rk:2,star:"天罡星",nk:"玉麒麟",nm:"卢俊义",s:[2,4,2,1,4,4,4,2],sk:"天罡星，河北三绝，棍棒天下无双。本是大名府首富，被吴用设计赚上梁山。他仪表堂堂、武艺超群，却始终是被操控的棋子。",sp:"领导（高，4分）：出身富贵，自带威仪。<br>忠义（高，4分）：一旦入伙，便全力以赴。<br>沉稳（高，4分）：做事有章法。<br>孤傲（高，4分）：出身商贾大户，骨子里有距离感。<br>侠义（中，2分）：更像义务而非本能。<br>豪放（中，2分）：锦衣玉食养成的克制。<br>叛逆（低，1分）：最不愿上梁山的好汉。<br>乐观（低，2分）：人生落差让他很难真正乐观。",tr:"核心特质一：被命运裹挟的贵族。<br>核心特质二：完美却空洞的武力符号。",al:"卢俊义是水浒中最具反讽意味的人物：完美的硬件，填不满命运的漏洞。",mo:"若生于当代，最适合做家族企业掌门人或高端品牌代言人。"},
+{rk:3,star:"天机星",nk:"智多星",nm:"吴用",s:[1,5,1,1,4,3,3,3],sk:"天机星，梁山首席智囊。教书先生出身，满腹诡计，一手策划了梁山大小战役。最终自缢于宋江墓前，以死践忠。",sp:"沉稳（极高，5分）：梁山最冷静的头脑。<br>忠义（高，4分）：对宋江的忠诚近乎偏执。<br>领导（中，3分）：善于出谋划策。<br>孤傲（中，3分）：读书人的清高。<br>乐观（中，3分）：对计划的乐观。<br>侠义（低，1分）：智谋用于目的。<br>豪放（低，1分）：书生体质。<br>叛逆（低，1分）：反的是具体的人，不是体制。",tr:"核心特质一：冷酷的实用主义者。<br>核心特质二：寄生型人格。",al:"吴用是水浒中最可悲的谋士：当所忠之人不在，智多星便成了无用星。",mo:"若生于当代，最适合做战略咨询顾问或企业COO。"},
+{rk:4,star:"天闲星",nk:"入云龙",nm:"公孙胜",s:[2,5,1,2,3,1,5,5],sk:"天闲星，梁山唯一的法师。呼风唤雨、腾云驾雾，始终游离于权力核心之外，最终归隐山林修道。",sp:"沉稳（极高，5分）：修道之人的心境。<br>孤傲（极高，5分）：出世之人。<br>乐观（极高，5分）：道家的随缘哲学。<br>忠义（中，3分）：忠于天道。<br>叛逆（中，2分）：超越世俗。<br>侠义（中，2分）：偶尔出手相助。<br>豪放（低，1分）：清修之人。<br>领导（低，1分）：从不指挥他人。",tr:"核心特质一：水浒唯一的出世者。<br>核心特质二：自由的代价。",al:"公孙胜是作者留下的隐喻：入局不是唯一的选择，出局也是一种智慧。",mo:"若生于当代，最适合做独立学者或自由职业者。"},
+{rk:5,star:"天勇星",nk:"大刀",nm:"关胜",s:[2,4,2,1,5,4,3,2],sk:"天勇星，关羽后裔，使一口青龙偃月刀。以祖上荣光为傲，以忠义传家为训，是梁山马军五虎将之首。",sp:"忠义（极高，5分）：关羽之后，忠义刻在骨子里。<br>领导（高，4分）：将门之后，统兵有方。<br>沉稳（高，4分）：久经沙场的稳重。<br>孤傲（中，3分）：名门之后的矜持。<br>侠义（中，2分）：偏向正统。<br>豪放（中，2分）：将门风度。<br>叛逆（低，1分）：骨子里仍是体制中人。<br>乐观（低，2分）：关羽后裔的宿命感。",tr:"核心特质一：背负祖辈光环的继承者。<br>核心特质二：体制内的完美军人。",al:"关胜是一面镜子：忠义传家，到底是福还是缚？",mo:"若生于当代，最适合做体制内的高级军官或公务员。"},
+{rk:6,star:"天雄星",nk:"豹子头",nm:"林冲",s:[2,5,2,2,3,2,4,1],sk:"天雄星，八十万禁军教头。本是体制内的精英，却被高俅逼得家破人亡、雪夜上梁山。他是水浒中最令人心疼的悲剧英雄。",sp:"沉稳（极高，5分）：林冲的忍功天下第一。<br>孤傲（高，4分）：经历让他不再信任任何人。<br>忠义（中，3分）：他曾忠于体制，但体制辜负了他。<br>叛逆（中，2分）：被逼出来的。<br>侠义（中，2分）：有侠义之心，但选择了自保。<br>豪放（中，2分）：被命运磨去了棱角。<br>领导（中，2分）：有能力，但无意领导。<br>乐观（极低，1分）：水浒中最悲观的人之一。",tr:"核心特质一：被逼到极限的隐忍者。<br>核心特质二：体制幻灭的典型。",al:"林冲是每一个被生活反复碾压却仍然站着的普通人的缩影。",mo:"若生于当代，最适合做技术专家或高级工程师。"},
+{rk:7,star:"天猛星",nk:"霹雳火",nm:"秦明",s:[2,1,5,2,4,3,2,2],sk:"天猛星，青州兵马统制。性格如火，阵前冲锋所向披靡。勇猛有余而谋略不足。",sp:"豪放（极高，5分）：梁山最火爆的好汉。<br>忠义（高，4分）：归顺后忠心耿耿。<br>领导（中，3分）：统兵有方。<br>叛逆（中，2分）：投降梁山是最大的叛逆。<br>侠义（中，2分）：有武人的豪气。<br>沉稳（极低，1分）：一点就着。<br>孤傲（中，2分）：人来疯。<br>乐观（中，2分）：急性子不记仇。",tr:"核心特质一：纯粹的战斗本能。<br>核心特质二：简单人的悲剧。",al:"秦明是一团烈火：照亮了战场，也烧毁了自己。",mo:"若生于当代，最适合做销售冠军或体育竞技者。"},
+{rk:8,star:"天威星",nk:"双鞭",nm:"呼延灼",s:[2,4,2,1,5,3,2,2],sk:"天威星，河东名将呼延赞之后。双鞭绝技名震天下，最终兵败归降。",sp:"忠义（极高，5分）：家族传承的忠义。<br>沉稳（高，4分）：沙场老将的沉稳。<br>领导（中，3分）：有统兵之才。<br>侠义（中，2分）：偏向家国情怀。<br>豪放（中，2分）：将门风度。<br>叛逆（低，1分）：骨子里是忠臣。<br>孤傲（中，2分）：名门之后的矜持。<br>乐观（中，2分）：务实之人。",tr:"核心特质一：将门忠魂的传承者。<br>核心特质二：被时代碾压的传统武将。",al:"呼延灼是一首挽歌：他唱的是世家将门最后的荣光。",mo:"若生于当代，最适合做传统行业的高级管理者。"},
+{rk:9,star:"天英星",nk:"小李广",nm:"花荣",s:[3,4,2,1,5,2,3,1],sk:"天英星，梁山第一神箭手。相貌俊美、箭术无双。最终在宋江墓前自缢殉义。",sp:"忠义（极高，5分）：对宋江的忠义最纯粹。<br>沉稳（高，4分）：弓箭手的天性。<br>孤傲（中，3分）：俊美外表带来距离感。<br>侠义（中，3分）：有侠义心肠。<br>豪放（中，2分）：外表清秀，内心有豪情。<br>领导（中，2分）：更愿意做辅佐者。<br>叛逆（低，1分）：叛逆只为宋江。<br>乐观（极低，1分）：殉义之人，骨子里悲观。",tr:"核心特质一：殉道式的忠义。<br>核心特质二：完美主义者。",al:"花荣是水浒中最纯粹的存在：宋江在哪，他就在哪。",mo:"若生于当代，最适合做艺术总监或专业运动员。"},
+{rk:10,star:"天贵星",nk:"小旋风",nm:"柴进",s:[4,3,2,2,3,3,2,3],sk:"天贵星，后周皇族后裔。仗义疏财、广交天下好汉，是梁山的孟尝君。",sp:"侠义（高，4分）：贵族式的侠义。<br>沉稳（中，3分）：贵族教养。<br>忠义（中，3分）：对朋友慷慨。<br>领导（中，3分）：有领袖气质。<br>豪放（中，2分）：贵族的豪放。<br>叛逆（中，2分）：皇族后裔的微妙抵触。<br>孤傲（中，2分）：贵族与平民之间的墙。<br>乐观（中，3分）：家底殷实的安全感。",tr:"核心特质一：江湖版孟尝君。<br>核心特质二：没落贵族的自我救赎。",al:"柴进是水浒中最浪漫的人物：他用金钱和气度，把江湖活成了一种生活方式。",mo:"若生于当代，最适合做投资人或慈善家。"},
+{rk:11,star:"天富星",nk:"扑天雕",nm:"李应",s:[2,4,2,1,3,4,4,3],sk:"天富星，独龙岗李家庄庄主。善使飞刀，文武双全。上山后掌管钱粮，是梁山的财务大管家。",sp:"领导（高，4分）：管理有方。<br>沉稳（高，4分）：商人本色。<br>孤傲（高，4分）：不太合群。<br>忠义（中，3分）：忠诚但不狂热。<br>豪放（中，2分）：精打细算。<br>侠义（中，2分）：有限的侠义。<br>叛逆（低，1分）：最不想上梁山。<br>乐观（中，3分）：务实者的乐观。",tr:"核心特质一：被忽略的实干家。<br>核心特质二：商人的理性。",al:"李应是水浒中最现代的人物——梁山的CFO。",mo:"若生于当代，最适合做CFO或财务总监。"},
+{rk:13,star:"天孤星",nk:"花和尚",nm:"鲁智深",s:[5,2,5,4,4,3,2,5],sk:"天孤星，原名鲁达。三拳打死镇关西，倒拔垂杨柳，大闹野猪林。他是水浒中最纯粹的侠客。",sp:"侠义（极高，5分）：看到不公就出手。<br>豪放（极高，5分）：大口吃肉、大碗喝酒。<br>乐观（极高，5分）：无论什么境遇都能坦然面对。<br>叛逆（高，4分）：反的是不公。<br>忠义（高，4分）：对兄弟情义真挚纯粹。<br>领导（中，3分）：有天然感召力。<br>沉稳（低，2分）：冲动是天性。<br>孤傲（低，2分）：人缘极好。",tr:"核心特质一：赤子之心。<br>核心特质二：破戒即持戒。",al:"鲁智深是《水浒传》留给世人最大的惊喜：佛不在庙里，在心里。",mo:"若生于当代，最适合做公益组织创始人或极限运动爱好者。"},
+{rk:14,star:"天伤星",nk:"行者",nm:"武松",s:[4,3,4,4,4,3,5,2],sk:"天伤星，绰号行者。景阳冈打虎、血溅鸳鸯楼——他是水浒中最能打的人，也是最孤独的人。",sp:"孤傲（极高，5分）：梁山最孤独的人。<br>侠义（高，4分）：路见不平必出手。<br>豪放（高，4分）：喝酒打虎的豪迈。<br>叛逆（高，4分）：对体制有深刻的不信任。<br>忠义（高，4分）：对兄弟情义深厚。<br>领导（中，3分）：有能力，但无意领导。<br>沉稳（中，3分）：能忍时极度隐忍。<br>乐观（低，2分）：经历了太多背叛。",tr:"核心特质一：被命运反复碾压的硬汉。<br>核心特质二：用暴力保护自己的孤独者。",al:"武松用一个凡人之躯，扛住了命运的全部重量。",mo:"若生于当代，最适合做独立调查记者或安保专家。"},
+{rk:15,star:"天立星",nk:"双枪将",nm:"董平",s:[2,2,4,3,3,3,3,3],sk:"天立星，东平府兵马都监。双枪使得出神入化，英勇善战。最终在征方腊时英勇战死。",sp:"豪放（高，4分）：战场上的疯子。<br>叛逆（中，3分）：不按常理出牌。<br>忠义（中，3分）：归顺后忠于梁山。<br>领导（中，3分）：有冲锋陷阵的本事。<br>孤傲（中，3分）：自视甚高。<br>侠义（中，2分）：战场勇猛不等于生活侠义。<br>沉稳（低，2分）：急躁是硬伤。<br>乐观（中，3分）：乐天派性格。",tr:"核心特质一：纯粹的战斗狂人。<br>核心特质二：有才无德的典型。",al:"董平是一把双刃剑：用好了是利器，用不好伤自己。",mo:"若生于当代，最适合做竞技体育选手或创业公司合伙人。"},
+{rk:16,star:"天捷星",nk:"没羽箭",nm:"张清",s:[2,3,3,2,4,2,3,3],sk:"天捷星，东昌府猛将。飞石绝技百发百中，连败梁山十五员大将。",sp:"忠义（高，4分）：归顺后忠心耿耿。<br>沉稳（中，3分）：用飞石需要冷静。<br>豪放（中，3分）：有武人的豪气。<br>孤傲（中，3分）：独门绝技带来的自信。<br>乐观（中，3分）：心态不错。<br>侠义（中，2分）：有义气。<br>叛逆（中，2分）：不算主动叛逆。<br>领导（中，2分）：擅长单打独斗。",tr:"核心特质一：独门绝技的孤独高手。<br>核心特质二：实用主义者。",al:"张清证明了——找准自己的独特优势，一样可以傲视群雄。",mo:"若生于当代，最适合做技术极客或产品经理。"},
+{rk:22,star:"天杀星",nk:"黑旋风",nm:"李逵",s:[3,1,5,5,5,1,1,4],sk:"天杀星，绰号黑旋风。手持两把板斧，所过之处人头滚滚。他是梁山最可怕的人，也是最天真的人。",sp:"豪放（极高，5分）：梁山最原生态的好汉。<br>叛逆（极高，5分）：他反一切。<br>忠义（极高，5分）：对宋江的忠义最纯粹。<br>乐观（高，4分）：有酒喝有仗打就是好日子。<br>侠义（中，3分）：有朴素的正义感。<br>沉稳（极低，1分）：字典里没有冷静。<br>领导（极低，1分）：最好的士兵。<br>孤傲（极低，1分）：最怕孤独。",tr:"核心特质一：没有刹车的油门。<br>核心特质二：宋江的影子。",al:"李逵是人类原始本能的化身——没有文明的修饰，只有赤裸裸的欲望和忠诚。",mo:"若生于当代，最适合做保镖或极限运动员。"},
+{rk:23,star:"天微星",nk:"九纹龙",nm:"史进",s:[3,2,4,4,3,2,2,3],sk:"天微星，史家庄少庄主。身上纹有九条青龙，少年意气。水浒中第一个出场的好汉。",sp:"豪放（高，4分）：少年热血。<br>叛逆（高，4分）：纹身九条龙，天生不安分。<br>侠义（中，3分）：有义气。<br>忠义（中，3分）：对兄弟义气。<br>乐观（中，3分）：年轻人的乐观。<br>沉稳（低，2分）：年轻人的通病。<br>领导（中，2分）：有潜力。<br>孤傲（中，2分）：少年人的骄傲。",tr:"核心特质一：梁山的少年中国。<br>核心特质二：成长中的英雄。",al:"史进是水浒的开场白：青春就是用来犯错的。",mo:"若生于当代，最适合做创业者或社交媒体红人。"},
+{rk:26,star:"天寿星",nk:"混江龙",nm:"李俊",s:[3,4,3,2,4,5,3,4],sk:"天寿星，浔阳江上的水匪头领。水性天下第一，征方腊后诈病离去，最终在海外称王。",sp:"领导（极高，5分）：梁山最具领导才能的好汉。<br>沉稳（高，4分）：水上作战需要冷静。<br>忠义（高，4分）：对兄弟情义深厚。<br>乐观（高，4分）：水手的乐观。<br>侠义（中，3分）：有江湖义气。<br>豪放（中，3分）：水匪的豪放。<br>孤傲（中，3分）：有远见。<br>叛逆（中，2分）：有自己的秩序。",tr:"核心特质一：最有远见的好汉。<br>核心特质二：隐忍的野心家。",al:"李俊是水浒中最大的赢家：真正的智者，赢在远方。",mo:"若生于当代，最适合做跨国企业CEO或出海创业者。"},
+{rk:27,star:"天剑星",nk:"立地太岁",nm:"阮小二",s:[3,3,4,4,4,3,2,3],sk:"天剑星，石碣村渔民。阮氏三兄弟之首，水上功夫了得。征方腊时自刎殉国。",sp:"豪放（高，4分）：渔民本色。<br>叛逆（高，4分）：对朝廷的恨是刻骨的。<br>忠义（高，4分）：对兄弟从不动摇。<br>侠义（中，3分）：有江湖义气。<br>沉稳（中，3分）：年长更稳重。<br>领导（中，3分）：阮氏三兄弟的大哥。<br>乐观（中，3分）：更懂得珍惜快乐。<br>孤傲（中，2分）：很合群。",tr:"核心特质一：底层反抗者的代表。<br>核心特质二：兄弟情义的守护者。",al:"阮小二是水浒中的一滴泪：乱世之中，小人物的命运从来不由自己掌控。",mo:"若生于当代，最适合做渔民合作社负责人或社区领袖。"},
+{rk:31,star:"天败星",nk:"活阎罗",nm:"阮小七",s:[3,2,5,5,3,2,2,5],sk:"天败星，阮氏三兄弟之末。水性最好、脾气最爆、也最乐观。穿上龙袍嬉闹被贬，但他不在乎。",sp:"豪放（极高，5分）：梁山最活的人。<br>叛逆（极高，5分）：穿龙袍说明不在乎规矩。<br>乐观（极高，5分）：被贬了也无所谓。<br>侠义（中，3分）：有义气。<br>忠义（中，3分）：对兄弟有情。<br>沉稳（低，2分）：字典里没有稳重。<br>领导（中，2分）：不适合领导。<br>孤傲（中，2分）：太热闹了。",tr:"核心特质一：梁山的快乐源泉。<br>核心特质二：水浒中最接近自由的人。",al:"阮小七是水浒中的一缕阳光：人生苦短，开心就好。",mo:"若生于当代，最适合做喜剧演员或旅游博主。"},
+{rk:33,star:"天慧星",nk:"拼命三郎",nm:"石秀",s:[4,2,3,4,4,1,4,2],sk:"天慧星，绰号拼命三郎。为人精明机警，做事不遗余力。独自一人劫法场救卢俊义。",sp:"侠义（高，4分）：侠义带着拼命的劲头。<br>叛逆（高，4分）：不信任权威。<br>忠义（高，4分）：对认定的人可以豁出命。<br>孤傲（高，4分）：独来独往。<br>豪放（中，3分）：有武人的豪气。<br>沉稳（低，2分）：做事太拼。<br>领导（极低，1分）：最好的执行者。<br>乐观（低，2分）：信任比乐观更重要。",tr:"核心特质一：用命换义的人。<br>核心特质二：精明的独狼。",al:"石秀用一个人的力量，完成了别人一个团队都完不成的事。",mo:"若生于当代，最适合做特警或独立调查员。"},
+{rk:36,star:"天巧星",nk:"浪子",nm:"燕青",s:[3,4,3,3,4,2,2,5],sk:"天巧星，卢俊义的贴身仆人。吹拉弹唱无所不通，相扑天下第一。梁山上最完美的人。",sp:"乐观（极高，5分）：梁山最会生活的人。<br>沉稳（高，4分）：做事滴水不漏。<br>忠义（高，4分）：对卢俊义忠心耿耿。<br>侠义（中，3分）：有义气。<br>叛逆（中，3分）：优雅的叛逆。<br>豪放（中，3分）：有豪放的一面。<br>领导（中，2分）：更喜欢幕后。<br>孤傲（中，2分）：八面玲珑，但内心有自己的小世界。",tr:"核心特质一：水浒中最现代的人。<br>核心特质二：浪子的自由。",al:"燕青是水浒中最聪明的人：真正的智慧，不是赢，而是知道什么时候该走。",mo:"若生于当代，最适合做自由职业者或斜杠青年。"},
+{rk:37,star:"地魁星",nk:"神机军师",nm:"朱武",s:[1,5,1,1,3,3,3,4],sk:"地魁星，少华山寨主。精通阵法，善于谋划。梁山的副军师，为人低调内敛。",sp:"沉稳（极高，5分）：梁山最沉稳的谋士。<br>乐观（高，4分）：谋士的乐观。<br>忠义（中，3分）：忠于职守。<br>领导（中，3分）：有参谋之才。<br>孤傲（中，3分）：读书人的清高。<br>侠义（极低，1分）：谋士以大局为重。<br>豪放（极低，1分）：书生体质。<br>叛逆（极低，1分）：谋的是事业。",tr:"核心特质一：被低估的谋士。<br>核心特质二：安静的实干家。",al:"朱武是水浒中的隐士：不是所有的金子都要发光。",mo:"若生于当代，最适合做数据分析师或幕僚。"},
+{rk:59,star:"地慧星",nk:"一丈青",nm:"扈三娘",s:[2,4,2,2,4,1,4,1],sk:"地慧星，扈家庄女将。武艺高强，英姿飒爽。然而全家被李逵灭门，自己被逼嫁给矮脚虎王英。",sp:"沉稳（高，4分）：战场上的冷静超越大多数男将。<br>忠义（高，4分）：被迫入伙后从未背叛。<br>孤傲（高，4分）：她的孤傲是命运的产物。<br>侠义（中，2分）：有武人的底线。<br>叛逆（中，2分）：内心有反抗。<br>豪放（中，2分）：女将风度。<br>领导（极低，1分）：梁山没有给她机会。<br>乐观（极低，1分）：命运太悲惨了。",tr:"核心特质一：被命运碾碎的女英雄。<br>核心特质二：沉默的反抗者。",al:"扈三娘映照出了那个时代女性的悲惨命运。",mo:"若生于当代，最适合做女性权益倡导者或专业运动员。"},
+{rk:68,star:"地壮星",nk:"母夜叉",nm:"孙二娘",s:[3,2,5,4,3,2,2,3],sk:"地壮星，十字坡酒店老板娘。与丈夫张青开着黑店，是梁山三位女将中最有江湖气的一个。",sp:"豪放（极高，5分）：梁山最放得开的女将。<br>叛逆（高，4分）：开黑店本身就是对秩序的蔑视。<br>侠义（中，3分）：有江湖义气。<br>忠义（中，3分）：对丈夫忠诚。<br>乐观（中，3分）：活得有滋有味。<br>沉稳（低，2分）：泼辣的性子。<br>领导（中，2分）：管得了酒店。<br>孤傲（中，2分）：太热闹了。",tr:"核心特质一：江湖女侠的原型。<br>核心特质二：乱世求生者。",al:"孙二娘代表了那些在乱世中挣扎求生的底层女性。",mo:"若生于当代，最适合做餐饮业老板娘或民间公益人士。"},
+{rk:71,star:"地贼星",nk:"鼓上蚤",nm:"时迁",s:[1,3,2,2,3,1,3,3],sk:"地贼星，绰号鼓上蚤。轻功天下第一，偷盗技术无人能及。梁山上的特种兵。",sp:"沉稳（中，3分）：做贼的人必须冷静。<br>孤傲（中，3分）：小偷的天性。<br>乐观（中，3分）：偷到就是赚到。<br>忠义（中，3分）：归顺后忠心耿耿。<br>豪放（中，2分）：更像个影子。<br>叛逆（中，2分）：叛逆的是财产制度。<br>侠义（极低，1分）：偷盗为生。<br>领导（极低，1分）：适合当影子。",tr:"核心特质一：梁山的特种兵。<br>核心特质二：被轻视的功臣。",al:"时迁证明了——评价一个人，不能只看标签。",mo:"若生于当代，最适合做信息安全专家或渗透测试工程师。"},
+{rk:73,star:"地隐星",nk:"白花蛇",nm:"杨春",s:[2,2,3,3,3,1,2,3],sk:"地隐星，少华山寨主之一。为人低调，存在感极低，但却是梁山基层力量的重要一员。",sp:"豪放（中，3分）：有江湖人的豪气。<br>叛逆（中，3分）：落草为寇本身就是叛逆。<br>忠义（中，3分）：对兄弟有义气。<br>乐观（中，3分）：随遇而安。<br>侠义（中，2分）：有限的侠义。<br>沉稳（低，2分）：不够稳重。<br>孤傲（中，2分）：存在感低。<br>领导（极低，1分）：三把手的命。",tr:"核心特质一：梁山的普通人。<br>核心特质二：随波逐流者。",al:"杨春是水浒中的路人甲：大多数人的人生，平淡、无奇、但也在努力活着。",mo:"若生于当代，最适合做普通上班族或自由职业者。"},
+{rk:77,star:"地乐星",nk:"铁叫子",nm:"乐和",s:[2,3,2,2,3,1,2,4],sk:"地乐星，绰号铁叫子。聪明伶俐，诸般乐器样样精通。梁山上的文艺兵。",sp:"乐观（高，4分）：他活着就是为了快乐。<br>沉稳（中，3分）：文艺工作者的细腻。<br>忠义（中，3分）：对兄弟有情。<br>豪放（中，2分）：文艺式的豪放。<br>叛逆（中，2分）：不太叛逆。<br>侠义（中，2分）：有义气。<br>孤傲（中，2分）：文艺青年的清高。<br>领导（极低，1分）：适合当气氛组。",tr:"核心特质一：梁山的气氛担当。<br>核心特质二：被忽略的价值。",al:"乐和是水浒中的一首歌：生活不只有打打杀杀，还有诗和远方。",mo:"若生于当代，最适合做音乐人或文艺工作者。"},
+{rk:101,star:"地阴星",nk:"母大虫",nm:"顾大嫂",s:[4,2,4,4,4,2,1,3],sk:"地阴星，东山酒店老板娘。性格刚烈，嫉恶如仇，为救解珍解宝不惜劫狱反上梁山。",sp:"侠义（高，4分）：为救亲人倾家荡产。<br>豪放（高，4分）：比大多数男人都豪放。<br>叛逆（高，4分）：劫狱、反上梁山。<br>忠义（高，4分）：对亲人无条件忠诚。<br>乐观（中，3分）：从不抱怨。<br>沉稳（低，2分）：急性子。<br>领导（中，2分）：有号召力。<br>孤傲（极低，1分）：太热情了。",tr:"核心特质一：为义而生的女人。<br>核心特质二：被低估的女英雄。",al:"顾大嫂是水浒中的一声呐喊：义气不分男女，勇气不分排名。",mo:"若生于当代，最适合做公益律师或社区维权者。"}
+];
+
+/* ====== Dimensions ====== */
+var DIMS=['侠义','沉稳','豪放','叛逆','忠义','领导','孤傲','乐观'];
+var DIM_IC={'侠义':'⚔️','沉稳':'🏔️','豪放':'🔥','叛逆':'⚡','忠义':'🛡️','领导':'👑','孤傲':'🌑','乐观':'☀️'};
+var DIM_IT={
+侠义:{high:'你有着强烈的正义感和保护欲，看到弱者受难会本能地出手相助。',mid:'你在侠义与自保之间保持平衡，选择性地伸出援手。',low:'你倾向于独善其身，认为每个人应该为自己的命运负责。'},
+沉稳:{high:'你处事冷静、深思熟虑，是人群中的定海神针。',mid:'你大部分时候能保持冷静，但在极端情况下也会冲动。',low:'你是行动派，想到就做，有时不计后果。'},
+豪放:{high:'你性格豪爽、率真坦荡，情绪外放，活得痛快。',mid:'你有豪放的一面，但也会根据不同场合调整自己。',low:'你偏好内敛含蓄的表达方式。'},
+叛逆:{high:'你天生反骨，对权威和规则有本能的质疑和挑战欲。',mid:'你对不合理的规则会质疑，但不会盲目对抗体制。',low:'你是秩序的维护者，相信规则和制度的价值。'},
+忠义:{high:'你一旦认定就会全心投入，忠诚是你的核心价值观。',mid:'你重视承诺，但也会在原则和忠诚之间权衡。',low:'你更看重灵活性和自我利益。'},
+领导:{high:'你天生具有领袖气质，喜欢掌控全局、指引方向。',mid:'你在必要时能承担领导角色，但不刻意追求权力。',low:'你更喜欢做执行者或自由人。'},
+孤傲:{high:'你享受独处，有丰富的内心世界，不在乎外界评价。',mid:'你需要独处时间来充电，但也能享受社交的乐趣。',low:'你是社交动物，人群是你的能量来源。'},
+乐观:{high:'你是天生的乐天派，能在逆境中找到希望和乐趣。',mid:'你大部分时间心态积极，但面对重大挫折时也会低落。',low:'你偏向悲观和谨慎，对事物有深刻的忧患意识。'}
+};
+
+/* ====== State ====== */
+var selVer=null,curQ=[],curIdx=0,ans=[],matchR=null;
+
+/* ====== Background: Ink Wash Mountains with Bamboo & Pine ====== */
+function initBG(){
+var cv=document.getElementById('bg-canvas'),cx=cv.getContext('2d');
+var W,H,mx=.5,my=.5,t=0;
+var parts=[];
+function rs(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight}
+rs();window.addEventListener('resize',rs);
+document.addEventListener('mousemove',function(e){mx=e.clientX/W;my=e.clientY/H});
+
+function mkMtn(base,amp,seg,rough){
+  var pts=[],sw=W/seg;
+  for(var i=0;i<=seg;i++){
+    var x=i*sw;
+    var n=Math.sin(i*rough)*amp*.6+Math.sin(i*rough*2.3+1)*amp*.25+Math.sin(i*rough*4.7+2)*amp*.15;
+    pts.push({x:x,y:base+n});
+  }return pts;
+}
+var mtns=[];
+function genMtns(){
+  mtns=[
+    {pts:mkMtn(H*.38,100,10,.7),c:'rgba(15,12,8,0.95)',px:12},
+    {pts:mkMtn(H*.48,70,14,1.1),c:'rgba(22,18,12,0.9)',px:20},
+    {pts:mkMtn(H*.58,55,18,1.6),c:'rgba(30,24,16,0.85)',px:30},
+    {pts:mkMtn(H*.68,40,22,2.2),c:'rgba(38,30,20,0.75)',px:40},
+    {pts:mkMtn(H*.78,25,28,3.0),c:'rgba(46,36,25,0.6)',px:50}
+  ];
+}
+genMtns();window.addEventListener('resize',function(){rs();genMtns()});
+
+function drawMtn(pts,col,px){
+  var ox=(mx-.5)*px;
+  cx.beginPath();cx.moveTo(pts[0].x+ox,pts[0].y);
+  for(var i=1;i<pts.length;i++){
+    var xc=(pts[i-1].x+pts[i].x)/2+ox,yc=(pts[i-1].y+pts[i].y)/2;
+    cx.quadraticCurveTo(pts[i-1].x+ox,pts[i-1].y,xc,yc);
+  }
+  cx.lineTo(W+50,H+50);cx.lineTo(-50,H+50);cx.closePath();
+  cx.fillStyle=col;cx.fill();
+}
+
+// Pine tree
+function drawPine(x,y,scale,alpha){
+  cx.save();cx.globalAlpha=alpha;cx.translate(x,y);cx.scale(scale,scale);
+  // trunk
+  cx.fillStyle='#2a1f14';cx.fillRect(-3,0,6,40);
+  // branches
+  cx.fillStyle='rgba(30,50,30,0.7)';
+  for(var i=0;i<5;i++){
+    var bx=(i%2===0?-1:1)*(10+i*3),by=i*8+5;
+    cx.beginPath();cx.moveTo(0,by);cx.lineTo(bx,by-8);cx.lineTo(bx*0.3,by-4);cx.closePath();cx.fill();
+  }
+  cx.restore();
+}
+
+// Bamboo
+function drawBamboo(x,y,h,alpha){
+  cx.save();cx.globalAlpha=alpha;
+  cx.strokeStyle='rgba(60,80,50,0.6)';cx.lineWidth=3;
+  cx.beginPath();cx.moveTo(x,y);cx.lineTo(x,y-h);cx.stroke();
+  // segments
+  for(var i=0;i<h;i+=20){
+    cx.strokeStyle='rgba(70,90,55,0.4)';cx.lineWidth=1;
+    cx.beginPath();cx.moveTo(x-4,y-i);cx.lineTo(x+4,y-i);cx.stroke();
+  }
+  // leaves
+  cx.fillStyle='rgba(50,75,40,0.5)';
+  for(var i=0;i<3;i++){
+    var ly=y-h+i*15+10,dir=i%2===0?1:-1;
+    cx.beginPath();cx.moveTo(x,ly);cx.quadraticCurveTo(x+dir*20,ly-10,x+dir*30,ly+5);cx.quadraticCurveTo(x+dir*15,ly+3,x,ly);cx.fill();
+  }
+  cx.restore();
+}
+
+// Particles
+function P(type){
+  this.type=type;this.reset();
+}
+P.prototype.reset=function(){
+  this.x=Math.random()*W;this.y=Math.random()*H;
+  if(this.type==='ink'){
+    this.sz=Math.random()*2+.5;this.sy=Math.random()*.3+.05;this.sx=(Math.random()-.5)*.1;
+    this.op=Math.random()*.06+.02;this.life=Math.random()*800+300;
+  }else{
+    this.sz=Math.random()*2+1;this.sy=(Math.random()-.5)*.15;this.sx=(Math.random()-.5)*.15;
+    this.op=0;this.mop=Math.random()*.25+.1;this.life=Math.random()*400+200;this.ph=Math.random()*Math.PI*2;
+  }
+  this.ml=this.life;
+};
+P.prototype.update=function(){
+  this.x+=this.sx;this.y+=this.sy;this.life--;
+  if(this.type==='fly'){
+    this.op=this.mop*Math.sin((1-this.life/this.ml)*Math.PI)*(.5+.5*Math.sin(t*.02+this.ph));
+    this.x+=Math.sin(t*.01+this.ph)*.3;
+  }
+  if(this.life<=0||this.y>H||this.x<-10||this.x>W+10)this.reset();
+};
+P.prototype.draw=function(){
+  if(this.type==='ink'){
+    var fi=Math.min(1,(this.ml-this.life)/60),fo=Math.min(1,this.life/60);
+    cx.globalAlpha=this.op*fi*fo;cx.fillStyle='#5a4d3f';
+    cx.beginPath();cx.arc(this.x,this.y,this.sz,0,Math.PI*2);cx.fill();
+  }else{
+    cx.globalAlpha=this.op;
+    var g=cx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.sz*3);
+    g.addColorStop(0,'rgba(212,168,75,0.5)');g.addColorStop(.5,'rgba(212,168,75,0.15)');g.addColorStop(1,'transparent');
+    cx.fillStyle=g;cx.beginPath();cx.arc(this.x,this.y,this.sz*3,0,Math.PI*2);cx.fill();
+  }
+};
+for(var i=0;i<25;i++)parts.push(new P('ink'));
+for(var i=0;i<10;i++)parts.push(new P('fly'));
+
+function drawMist(){
+  var my2=H*.5+Math.sin(t*.003)*30;
+  var g=cx.createLinearGradient(0,my2-80,0,my2+80);
+  g.addColorStop(0,'transparent');g.addColorStop(.3,'rgba(168,152,128,0.03)');g.addColorStop(.5,'rgba(168,152,128,0.05)');g.addColorStop(.7,'rgba(168,152,128,0.03)');g.addColorStop(1,'transparent');
+  cx.fillStyle=g;cx.fillRect(0,my2-80,W,160);
+}
+
+function drawMoon(){
+  var mxx=W*.78+(mx-.5)*-10,myy=H*.12+(my-.5)*-5;
+  var g=cx.createRadialGradient(mxx,myy,0,mxx,myy,100);
+  g.addColorStop(0,'rgba(232,220,200,0.12)');g.addColorStop(.3,'rgba(212,168,75,0.05)');g.addColorStop(1,'transparent');
+  cx.fillStyle=g;cx.beginPath();cx.arc(mxx,myy,100,0,Math.PI*2);cx.fill();
+  cx.fillStyle='rgba(232,220,200,0.18)';cx.beginPath();cx.arc(mxx,myy,22,0,Math.PI*2);cx.fill();
+}
+
+// Water reflection
+function drawWater(){
+  var wy=H*.82;
+  cx.fillStyle='rgba(20,16,10,0.4)';cx.fillRect(0,wy,W,H-wy);
+  cx.strokeStyle='rgba(168,152,128,0.04)';cx.lineWidth=1;
+  for(var i=0;i<8;i++){
+    var ly=wy+i*15+Math.sin(t*.01+i)*3;
+    cx.beginPath();cx.moveTo(0,ly);
+    for(var x=0;x<W;x+=40){cx.lineTo(x,ly+Math.sin(x*.02+t*.005+i)*2);}
+    cx.stroke();
+  }
+}
+
+function animate(){
+  t++;cx.clearRect(0,0,W,H);
+  var sg=cx.createLinearGradient(0,0,0,H);
+  sg.addColorStop(0,'#0a0806');sg.addColorStop(.25,'#120e08');sg.addColorStop(.5,'#1a1410');sg.addColorStop(1,'#1a1410');
+  cx.fillStyle=sg;cx.fillRect(0,0,W,H);
+  drawMoon();
+  mtns.forEach(function(m){drawMtn(m.pts,m.c,m.px)});
+  // Trees & bamboo
+  drawPine(W*.08,H*.55,.8,.4);drawPine(W*.92,H*.5,.7,.35);
+  drawBamboo(W*.05,H*.6,120,.3);drawBamboo(W*.95,H*.55,100,.25);
+  drawMist();drawWater();
+  parts.forEach(function(p){p.update();p.draw()});
+  cx.globalAlpha=1;
+  requestAnimationFrame(animate);
+}
+animate();
+}
+
+/* ====== Version Selector ====== */
+function selectVersion(v){
+  selVer=v;
+  var cards=document.querySelectorAll('.version-card');
+  for(var i=0;i<cards.length;i++){
+    var cv=parseInt(cards[i].getAttribute('data-version'));
+    if(cv===v){cards[i].classList.add('selected')}else{cards[i].classList.remove('selected')}
+  }
+  document.getElementById('btn-start').disabled=false;
+}
+
+/* ====== Quiz Logic ====== */
+function startQuiz(){
+  if(!selVer)return;
+  if(selVer===24){
+    curQ=[];
+    for(var i=0;i<ALL_Q.length;i++){if(SHORT_IDS.indexOf(ALL_Q[i].id)!==-1)curQ.push(ALL_Q[i]);}
+  }else{curQ=ALL_Q.slice();}
+  ans=new Array(curQ.length);for(var i=0;i<ans.length;i++)ans[i]=null;
+  curIdx=0;showPage('page-quiz');renderQ(0);
+}
+
+function renderQ(idx){
+  var q=curQ[idx];
+  var labels=['非常不同意','比较不同意','一般','比较同意','非常同意'];
+  var emojis=['😤','😕','😐','🙂','😄'];
+  var area=document.getElementById('question-area');
+  var html='<div class="question-card"><div class="q-header"><div class="q-number">'+(idx+1)+'</div><span class="q-dim-tag">'+DIM_IC[q.d]+' '+q.d+'</span></div><p class="q-text">'+q.text+'</p></div><div class="options">';
+  for(var i=0;i<5;i++){
+    var val=i+1;
+    var sel=ans[idx]===val?' selected':'';
+    html+='<button class="option-btn'+sel+'" onclick="selOpt('+idx+','+val+',this)"><span class="opt-score">'+val+'</span><span class="opt-label">'+labels[i]+'</span><span class="opt-emoji">'+emojis[i]+'</span></button>';
+  }
+  html+='</div>';
+  area.innerHTML=html;
+  updateProg();updateNav();
+}
+
+function selOpt(qi,v,btn){
+  ans[qi]=v;
+  var opts=btn.parentNode.children;
+  for(var i=0;i<opts.length;i++)opts[i].classList.remove('selected');
+  btn.classList.add('selected');
+  setTimeout(function(){if(curIdx<curQ.length-1){curIdx++;renderQ(curIdx)}},350);
+}
+
+function prevQ(){if(curIdx>0){curIdx--;renderQ(curIdx)}}
+function nextQ(){
+  if(ans[curIdx]===null){showToast('请先选择一个选项');return}
+  if(curIdx<curQ.length-1){curIdx++;renderQ(curIdx)}
+  else{
+    for(var i=0;i<ans.length;i++){if(ans[i]===null){showToast('第 '+(i+1)+' 题还未作答');curIdx=i;renderQ(curIdx);return}}
+    showResult();
+  }
+}
+
+function updateProg(){
+  var pct=((curIdx+1)/curQ.length)*100;
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('progress-text').textContent='第 '+(curIdx+1)+' 题 / 共 '+curQ.length+' 题';
+  document.getElementById('progress-dim').textContent=DIM_IC[curQ[curIdx].d]+' '+curQ[curIdx].d;
+}
+function updateNav(){
+  document.getElementById('btn-prev').style.visibility=curIdx>0?'visible':'hidden';
+  document.getElementById('btn-next').textContent=curIdx===curQ.length-1?'查看结果':'下一题';
+}
+
+/* ====== Scoring ====== */
+function calcScores(){
+  var sc={};
+  for(var di=0;di<DIMS.length;di++){
+    var dim=DIMS[di],items=[];
+    for(var i=0;i<curQ.length;i++){
+      if(curQ[i].d===dim&&ans[i]!==null)items.push(curQ[i].r?(6-ans[i]):ans[i]);
+    }
+    sc[dim]=items.length?items.reduce(function(a,b){return a+b},0)/items.length:0;
+  }return sc;
+}
+function matchChar(us){
+  var uv=[];for(var i=0;i<DIMS.length;i++)uv.push(us[DIMS[i]]||0);
+  var res=[];
+  for(var ci=0;ci<CHARS.length;ci++){
+    var dist=0;for(var i=0;i<8;i++)dist+=Math.pow(uv[i]-CHARS[ci].s[i],2);
+    res.push({c:CHARS[ci],d:Math.sqrt(dist)});
+  }
+  res.sort(function(a,b){return a.d-b.d});return res;
+}
+
+/* ====== Radar Chart ====== */
+function drawRadar(us,cs,anim){
+  var cv=document.getElementById('radar-canvas'),cx=cv.getContext('2d');
+  var W=cv.width,H=cv.height,cx2=W/2,cy=H/2,R=Math.min(W,H)*.35;
+  var steps=5,n=8,as=(2*Math.PI)/n,sa=-Math.PI/2;
+  cx.clearRect(0,0,W,H);
+  for(var s=1;s<=steps;s++){var r=(R/steps)*s;cx.beginPath();for(var i=0;i<=n;i++){var a=sa+as*(i%n);var x=cx2+r*Math.cos(a),y=cy+r*Math.sin(a);i===0?cx.moveTo(x,y):cx.lineTo(x,y)}cx.closePath();cx.strokeStyle='rgba(168,152,128,0.12)';cx.lineWidth=1;cx.stroke()}
+  for(var i=0;i<n;i++){var a=sa+as*i;cx.beginPath();cx.moveTo(cx2,cy);cx.lineTo(cx2+R*Math.cos(a),cy+R*Math.sin(a));cx.strokeStyle='rgba(168,152,128,0.08)';cx.stroke()}
+  cx.font='24px "Noto Serif SC",serif';cx.fillStyle='#a89880';cx.textAlign='center';cx.textBaseline='middle';
+  var lr=R+40;for(var i=0;i<n;i++){var a=sa+as*i;cx.fillText(DIMS[i],cx2+lr*Math.cos(a),cy+lr*Math.sin(a))}
+  function drawPoly(sc,st,fl,pr){
+    var pts=[];for(var i=0;i<n;i++){var a=sa+as*i,v=Math.min(5,Math.max(0,sc[DIMS[i]]||0)),r=(v/5)*R*pr;pts.push({x:cx2+r*Math.cos(a),y:cy+r*Math.sin(a)})}
+    if(fl){cx.beginPath();for(var i=0;i<pts.length;i++){i===0?cx.moveTo(pts[i].x,pts[i].y):cx.lineTo(pts[i].x,pts[i].y)}cx.closePath();cx.fillStyle=fl;cx.fill()}
+    cx.beginPath();for(var i=0;i<pts.length;i++){i===0?cx.moveTo(pts[i].x,pts[i].y):cx.lineTo(pts[i].x,pts[i].y)}cx.closePath();cx.strokeStyle=st;cx.lineWidth=3;cx.stroke();
+    for(var i=0;i<pts.length;i++){cx.beginPath();cx.arc(pts[i].x,pts[i].y,5,0,Math.PI*2);cx.fillStyle=st;cx.fill()}
+  }
+  drawPoly(us,'#c23a2b','rgba(194,58,43,0.2)',anim);drawPoly(cs,'#d4a84b',null,anim);
+  if(anim>=1){cx.font='20px "Noto Sans SC",sans-serif';for(var i=0;i<n;i++){var a=sa+as*i,v=us[DIMS[i]]||0,r=(v/5)*R;cx.fillStyle='#e8dcc8';cx.textAlign='center';cx.fillText(v.toFixed(1),cx2+(r+20)*Math.cos(a),cy+(r+20)*Math.sin(a))}}
+}
+function animRadar(us,cs){var st=performance.now();function fr(now){var p=Math.min(1,(now-st)/1500),e=1-Math.pow(1-p,3);drawRadar(us,cs,e);if(p<1)requestAnimationFrame(fr)}requestAnimationFrame(fr)}
+
+/* ====== Result ====== */
+function showResult(){
+  var us=calcScores();matchR=matchChar(us);var best=matchR[0].c;
+  var cs={};for(var i=0;i<DIMS.length;i++)cs[DIMS[i]]=best.s[i];
+  showPage('page-result');
+  var els={star:document.getElementById('reveal-star'),nick:document.getElementById('reveal-nickname'),name:document.getElementById('reveal-name'),stamp:document.getElementById('reveal-stamp'),sk:document.getElementById('reveal-sketch')};
+  for(var k in els){els[k].classList.remove('visible')}
+  els.star.textContent=best.star;els.nick.textContent=best.nk;els.name.textContent=best.nm;els.stamp.textContent=best.nm;els.sk.textContent=best.sk;
+  setTimeout(function(){els.star.classList.add('visible')},300);
+  setTimeout(function(){els.nick.classList.add('visible')},900);
+  setTimeout(function(){els.name.classList.add('visible')},1500);
+  setTimeout(function(){els.stamp.classList.add('visible')},2100);
+  setTimeout(function(){els.sk.classList.add('visible')},2600);
+  setTimeout(function(){animRadar(us,cs)},2800);
+  setTimeout(function(){renderDC(us,cs,best)},3000);
+  setTimeout(function(){renderRpt(best)},3200);
+  setTimeout(function(){renderSub()},3400);
+}
+function renderDC(us,cs,ch){
+  var g=document.getElementById('dimension-grid'),html='';
+  for(var i=0;i<DIMS.length;i++){
+    var dim=DIMS[i],uv=us[dim]||0,cv=cs[dim]||0,lvl=uv>=4?'high':uv>=2?'mid':'low';
+    html+='<div class="dim-card"><div class="dim-card-header"><span class="dim-name"><span class="dim-icon">'+DIM_IC[dim]+'</span> '+dim+'</span></div><div class="dim-scores"><span class="dim-score-item"><span class="dot dot-user"></span> 我：'+uv.toFixed(1)+'</span><span class="dim-score-item"><span class="dot dot-char"></span> '+ch.nm+'：'+cv.toFixed(1)+'</span></div><div class="dim-bar-track"><div class="dim-bar-user" style="width:0%"></div><div class="dim-bar-char" style="width:0%"></div></div><p class="dim-interpretation">'+DIM_IT[dim][lvl]+'</p></div>';
+  }
+  g.innerHTML=html;
+  var cards=g.querySelectorAll('.dim-card');
+  for(var i=0;i<cards.length;i++){
+    (function(idx){
+      setTimeout(function(){
+        var dim=DIMS[idx];
+        cards[idx].querySelector('.dim-bar-user').style.width=((us[dim]||0)/5*100)+'%';
+        cards[idx].querySelector('.dim-bar-char').style.width=((cs[dim]||0)/5*100)+'%';
+      },idx*80);
+    })(i);
+  }
+}
+function renderRpt(ch){
+  document.getElementById('report-sections').innerHTML=
+    '<div class="report-section"><h2 class="section-title">精神特质与行为密码</h2><div class="report-text">'+ch.tr+'</div></div>'+
+    '<div class="report-section"><h2 class="section-title">水浒人生寓言</h2><div class="report-text">'+ch.al+'</div></div>'+
+    '<div class="report-section"><h2 class="section-title">现代映照</h2><div class="report-text">'+ch.mo+'</div></div>'+
+    '<div class="report-section"><h2 class="section-title">八维性格光谱</h2><div class="report-text">'+ch.sp+'</div></div>';
+}
+function renderSub(){
+  var c=document.getElementById('sub-matches');
+  if(!matchR||matchR.length<3){c.innerHTML='<p style="color:var(--text-muted)">数据不足</p>';return}
+  var html='';
+  for(var i=1;i<=2;i++){
+    var m=matchR[i].c,d=matchR[i].d;
+    html+='<div class="sub-match-item"><span class="sub-match-rank">第 '+(i+1)+' 匹配</span><div class="sub-match-info"><span class="sub-match-name">'+m.nm+'</span><span class="sub-match-detail"> · '+m.star+' · '+m.nk+'</span></div><span class="sub-match-dist">距离 '+d.toFixed(2)+'</span></div>';
+  }
+  c.innerHTML=html;
+}
+
+/* ====== Share & Nav ====== */
+function shareResult(){
+  if(!matchR)return;var best=matchR[0].c,us=calcScores();
+  var ds='';for(var i=0;i<DIMS.length;i++)ds+=DIMS[i]+':'+(us[DIMS[i]]||0).toFixed(1)+(i<7?' | ':'');
+  var txt='🏯 水浒人物性格测评结果\n━━━━━━━━━━━━━━━━━━\n我是 '+best.star+' · '+best.nk+' · '+best.nm+'！\n\n📊 我的八维：'+ds+'\n\n🥈 第二匹配：'+matchR[1].c.nm+'（'+matchR[1].c.nk+'）\n🥉 第三匹配：'+matchR[2].c.nm+'（'+matchR[2].c.nk+'）\n\n━━━━━━━━━━━━━━━━━━\n来测测你是梁山哪位好汉？';
+  navigator.clipboard.writeText(txt).then(function(){showToast('结果已复制到剪贴板！')}).catch(function(){showToast('复制失败')});
+}
+function restartQuiz(){
+  selVer=null;curQ=[];ans=[];matchR=null;
+  var cards=document.querySelectorAll('.version-card');
+  for(var i=0;i<cards.length;i++)cards[i].classList.remove('selected');
+  document.getElementById('btn-start').disabled=true;
+  showPage('page-welcome');
+}
+function showPage(id){
+  var pages=document.querySelectorAll('.page');
+  for(var i=0;i<pages.length;i++)pages[i].classList.remove('active');
+  var p=document.getElementById(id);p.classList.add('active');
+  p.style.animation='none';p.offsetHeight;p.style.animation='';
+  window.scrollTo(0,0);
+}
+function showToast(msg){
+  var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show')},2500);
+}
+
+/* ====== Bind Nav Buttons ====== */
+document.getElementById('btn-prev').addEventListener('click',prevQ);
+document.getElementById('btn-next').addEventListener('click',nextQ);
+
+/* ====== Init ====== */
+initBG();
+</script>
+</body>
+</html>
